@@ -1,10 +1,10 @@
 # 🛰️ Dashboard Réseau
 
-Un outil de surveillance réseau local qui détecte les appareils connectés à ton wifi, garde un historique des scans, et signale les connexions inhabituelles.
+Un outil de surveillance réseau local qui détecte les appareils connectés au wifi, garde un historique des scans, et signale les connexions inhabituelles.
 
 ## Fonctionnalités
 
-- **Détection automatique du réseau** — plus besoin de préciser manuellement le sous-réseau, il est déduit automatiquement de ta connexion actuelle
+- **Détection automatique du réseau** — plus besoin de préciser manuellement le sous-réseau, il est déduit automatiquement de la connexion actuelle
 - **Scan des appareils connectés** — combine un ping sweep (pour forcer les appareils actifs à répondre) et une lecture de la table ARP de Windows
 - **Historique persistant** — chaque scan est sauvegardé dans `historique.json`
 - **Détection des nouveaux appareils** — repère tout appareil jamais vu dans l'historique
@@ -28,19 +28,18 @@ Cette méthode ne nécessite **aucun droit administrateur** ni de permissions r�
 - **HTML / CSS / Jinja2** — interface, thème sombre avec Chart-like data en monospace
 
 ## Structure du projet
-
+```
 Projet_dashboard_réseau/
-├── app.py # serveur Flask, routes / et /scan
-├── scan.py # détection du sous-réseau, ping sweep, lecture ARP
-├── alerte.py # logique de détection (nouveaux appareils, heure inhabituelle)
-├── stockage.py # sauvegarde/lecture de l'historique JSON
-├── historique.json # historique des scans (généré automatiquement)
+├── app.py              # serveur Flask, routes / et /scan
+├── scan.py             # détection du sous-réseau, ping sweep, lecture ARP
+├── alerte.py           # logique de détection (nouveaux appareils, heure inhabituelle)
+├── stockage.py         # sauvegarde/lecture de l'historique JSON
+├── historique.json     # historique des scans (généré automatiquement)
 ├── templates/
-│ └── index.html # page principale
+│   └── index.html      # page principale
 └── static/
-└── style.css # thème visuel
-
-
+    └── style.css        # thème visuel
+```
 ## Prérequis
 
 - Python 3

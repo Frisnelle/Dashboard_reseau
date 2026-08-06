@@ -1,7 +1,8 @@
 import subprocess
 import re
 import concurrent.futures
-
+from stockage import sauvegarder_scan
+from alerte import detecter_nouveaux_appareils
 
 def ping_sweep(sous_reseau="192.168.100"):
     """
@@ -54,10 +55,20 @@ def scanner_reseau():
 if __name__ == "__main__":
     print("Sondage du réseau en cours (quelques secondes)...\n")
     ping_sweep()
-
+    
     print("Lecture de la table ARP...\n")
     appareils_trouves = scanner_reseau()
-
+    
+    # Détection AVANT de sauvegarder (sinon on compare le scan à lui-même)
+    nouveaux = detecter_nouveaux_appareils(appareils_trouves)
+    
     print(f"{len(appareils_trouves)} appareil(s) trouvé(s) :\n")
     for appareil in appareils_trouves:
-        print(f"IP: {appareil['ip']:<15} MAC: {appareil['mac']}")
+        marqueur = " 🆕 NOUVEAU" if appareil in nouveaux else ""
+        print(f"IP: {appareil['ip']:<15} MAC: {appareil['mac']}{marqueur}")
+    
+    if nouveaux:
+        print(f"\n⚠️  {len(nouveaux)} appareil(s) jamais vu(s) avant !")
+    
+    sauvegarder_scan(appareils_trouves)
+    print("\n✅ Scan sauvegardé dans historique.json")

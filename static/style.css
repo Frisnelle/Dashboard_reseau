@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --bg: #0A0E1A;
+    --panel: #10192B;
+    --panel-border: #1E293B;
+    --text: #E2E8F0;
+    --text-muted: #64748B;
+    --teal: #22D3AE;
+    --amber: #F5A623;
+    --indigo: #6366F1;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    padding: 40px 24px;
+}
+
+.conteneur {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* --- En-tête avec pulsation live --- */
+.entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.titre-bloc { display: flex; align-items: center; gap: 14px; }
+
+.radar {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--teal);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.radar::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid var(--teal);
+    animation: pulse-radar 2s ease-out infinite;
+}
+
+@keyframes pulse-radar {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.derniere-maj {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.btn-scan {
+    background: var(--indigo);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-scan:hover { background: #5457E5; transform: translateY(-1px); }
+.btn-scan:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* --- Résumé --- */
+.resume {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    flex: 1;
+}
+
+.stat .chiffre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.stat .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+
+.stat.alerte .chiffre { color: var(--amber); }
+
+/* --- Liste des appareils --- */
+.liste-appareils {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.carte-appareil {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.carte-appareil.nouveau {
+    border-color: var(--amber);
+    background: linear-gradient(90deg, rgba(245, 166, 35, 0.08), var(--panel) 30%);
+}
+
+.appareil-info { display: flex; align-items: center; gap: 14px; }
+
+.point-statut {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0;
+}
+
+.carte-appareil.nouveau .point-statut {
+    background: var(--amber);
+    animation: pulse-point 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-point {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.appareil-adresses {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+}
+
+.appareil-ip { color: var(--text); }
+.appareil-mac { color: var(--text-muted); margin-top: 2px; }
+
+.badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.badge.connu {
+    background: rgba(34, 211, 174, 0.12);
+    color: var(--teal);
+}
+
+.badge.nouveau {
+    background: rgba(245, 166, 35, 0.15);
+    color: var(--amber);
+}
+
+/* --- État vide --- */
+.etat-vide {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+    .resume { flex-direction: column; }
+    .appareil-adresses { font-size: 12px; }
+}
+
+.carte-appareil.suspect {
+    border-color: #EF4444;
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), var(--panel) 30%);
+}
+
+.carte-appareil.suspect .point-statut {
+    background: #EF4444;
+    animation: pulse-point 1s ease-in-out infinite;
+}
+
+.badge.suspect {
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+}
+
+.stat.critique .chiffre { color: #EF4444; }

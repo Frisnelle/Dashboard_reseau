@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Réseau</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="conteneur">
+        <div class="entete">
+            <div class="titre-bloc">
+                <div class="radar"></div>
+                <div>
+                    <h1>Dashboard Réseau</h1>
+                    {% if date_scan %}
+                    <div class="derniere-maj">Dernier scan : {{ date_scan[:19].replace('T', ' ') }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <form method="POST" action="{{ url_for('lancer_scan') }}">
+                <button type="submit" class="btn-scan">Scanner maintenant</button>
+            </form>
+        </div>
+
+        <div class="resume">
+            <div class="stat">
+                <div class="chiffre">{{ nb_appareils }}</div>
+                <div class="label">Appareils connectés</div>
+            </div>
+            <div class="stat alerte">
+                <div class="chiffre">{{ nb_nouveaux }}</div>
+                <div class="label">Nouveaux détectés</div>
+            </div>
+            <div class="stat critique">
+                <div class="chiffre">{{ nb_suspects }}</div>
+                <div class="label">Connexions suspectes</div>
+            </div>
+        </div>
+
+        {% if appareils %}
+        <div class="liste-appareils">
+            {% for appareil in appareils %}
+            <div class="carte-appareil {{ 'suspect' if appareil.suspect else ('nouveau' if appareil.nouveau else '') }}">
+                <div class="appareil-info">
+                    <div class="point-statut"></div>
+                    <div class="appareil-adresses">
+                        <div class="appareil-ip">{{ appareil.ip }}</div>
+                        <div class="appareil-mac">{{ appareil.mac }}</div>
+                    </div>
+                </div>
+                <span class="badge {{ 'suspect' if appareil.suspect else ('nouveau' if appareil.nouveau else 'connu') }}">
+                    {{ 'Suspect' if appareil.suspect else ('Nouveau' if appareil.nouveau else 'Connu') }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="etat-vide">
+            Aucun scan pour l'instant. Clique sur "Scanner maintenant" pour commencer.
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
